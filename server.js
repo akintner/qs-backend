@@ -28,7 +28,7 @@ app.get('/', (request, response) => {
 
 app.get('/api/foods', IndexController.index)
 app.get('/api/foods/:id', ShowController.show)
-app.delete("/api/foods/:id", DeleteController.deletes) 
+app.delete('/api/foods/:id', DeleteController.deletes) 
 app.post('/api/foods', CreateController.create)
 app.put('/api/foods/edit/:id', EditController.edit)
 
