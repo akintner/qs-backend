@@ -14,12 +14,16 @@
 `knex migrate:latest` (this will create the database needed to run the project from the migrations)    
 `knex seed:run` (this will load fake seed data into the database for each model)  
 
-* How to run the program from your local browser: if you would like to run the program from your browser, please type `npm start` into the terminal and then open up a browser of your choice and type in the following basic URL `localhost:3000` or `http://127.0.0.1:3000`. The following extra paths are also available: 
+* How to run the program from your local browser: if you would like to run the program from your browser, please type `npm start` into the terminal and then open up a browser of your choice and type in the following basic URL `localhost:3000` or `http://127.0.0.1:3000`. The app is up in production on heroku and available at https://qs-backend.herokuapp.com 
+
+* The following extra paths are also available from localhost or from production on heroku: 
 
 #### Database Endpoints
-`localhost:3000/api/foods` returns a list of all foods in the database  
-`localhost:3000/api/foods/:id`  returns a specific food from the database by id number    
-`localhost:3000/api/foods/edit/:id` edit a food from the database  
+`/api/foods` returns a list of all foods in the database  
+`/api/foods/:id`  returns a specific food from the database by id number    
+`/api/foods/edit/:id` edit a food from the database  
 
+#### API Functionality
+* The API also accepts POST requests to `/api/foods` to add new foods into the database and DELETE requests to `/api/foods/:id` to remove a food from the database. 
 
 
