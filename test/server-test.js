@@ -44,7 +44,7 @@ describe('server', () => {
 
   describe('GET /api/foods/:id', () => {
     beforeEach((done) => {
-      Food.createFood("{name: taco (crunchy beef), calories: 155}").then(() => done());
+      Food.createFood("{name: taco (crunchy beef), calories: 155}", new Date).then(() => done());
     });
 
     afterEach((done) => {
@@ -77,7 +77,7 @@ describe('server', () => {
 
   describe('POST to /api/foods', () => {
     beforeEach((done) => {
-      Food.createFood("{name: taco (crunchy beef), calories: 155}").then(() => done());
+      Food.createFood("{name: taco (crunchy beef), calories: 155}", new Date).then(() => done());
     });
 
     afterEach((done) => {
@@ -93,26 +93,20 @@ describe('server', () => {
     });
 
     it('can take a POST request to add food', (done) => {
-      const food = "{name: 'chocolate cake', calories: '355'}"
+      const food = "{name: chocolate cake, calories: 355}"
       this.request.post('/api/foods', {form: food}, (err, response) => {
-        const name = "chocolate cake"
-        const calories = "355"
         if (err) { done(err) }
-        Food.findFood(request.params.id)
-        .then((foods) => {
-          if(!foods){
-            done(err)
-          }
-          assert.equal(foods.rowCount, 1)
-          done()
-        }).catch(done)
+        var parsed = JSON.parse(response.body)
+        assert.include(parsed, 'chocolate')
+        assert.include(parsed, '355')
       })
+      done()
     })
   });
 
   describe('PUT to /api/foods/edit/:id', () => {
     beforeEach((done) => {
-      Food.createFood("{name: taco (crunchy beef), calories: 155}").then(() => done());
+      Food.createFood("{name: taco (crunchy beef), calories: 155}", new Date).then(() => done());
     });
 
     afterEach((done) => {
@@ -128,30 +122,21 @@ describe('server', () => {
     });
 
     it('can take a PUT request to update a food', (done) => {
-      const food = "{name: 'pizza', calories: '305'}"
-      this.request.put('/api/foods/edit/1', {form: food}, (err, response) => {
-        if (err) { done(err) }
-        const name = 'pizza'
-        const calories = '305'
-        Food.findFood(request.params.id)
-        .then((foods) => {
-          const oldFood = foods.row[0]
-          assert.include(oldFood.food, name)
-          assert.include(oldFood, calories)
-        }).then(() => {
-          Food.findFood(request.params.id)
-          .then((foods) => {
-            assert.equal(foods.rows[0], undefined)
-            done()
-          }).catch(done)
-        }).catch(done)
+      var food = "{name: carrot cake, calories: 425}"
+      this.request.put('/api/foods/edit/:id', {form: food}, (err, response) => {
+        if (err) {done(err)}
+        var parsed = JSON.parse(response.body)
+        assert.equal(response.statusCode, 202)
+        assert.include(parsed.food, 'carrot cake')
+        assert.include(parsed.food, '425')
       })
+      done()
     })
   });
 
   describe('DELETE /api/foods/:id', () => {
     beforeEach((done) => {
-      Food.createFood("{name: taco (crunchy beef), calories: 155}").then(() => done());
+      Food.createFood("{name: taco (crunchy beef), calories: 155}", new Date).then(() => done());
     });
 
     it ('will delete a food', (done) => {
